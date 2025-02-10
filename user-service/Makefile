@@ -5,9 +5,9 @@ migrate-create: ## create migration file `make migrate-create name=migration_nam
 
 migrate-up: ## up migration files `make migrate-up`
 	@migrate -path=migrations -database ${POSTGRES_URL} -verbose up
-	
+
 migrate-down: ## down one migration file `make migrate-down`
 	@migrate -path=migrations -database ${POSTGRES_URL} -verbose down 1
-	
-migrate-version:
+
+migrate-version: ## get current migration version `make migrate-version`
 	@migrate -path=migrations -database ${POSTGRES_URL} version
