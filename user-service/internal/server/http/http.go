@@ -3,6 +3,7 @@ package http
 import (
 	"context"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/korroziea/photo-storage/internal/config"
@@ -21,7 +22,7 @@ type Server struct {
 func New(cfg config.Config, handler http.Handler) *Server {
 	s := &Server{
 		server: http.Server{
-			Addr:              ":" + cfg.HTTPPort,
+			Addr:              ":" + strconv.Itoa(cfg.HTTPPort),
 			Handler:           handler,
 			ReadHeaderTimeout: readHeaderTimeout,
 			ReadTimeout:       readTimeout,

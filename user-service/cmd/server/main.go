@@ -29,8 +29,10 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	// TODO init app
-	app := bootstrap.New(*l, cfg) // pointer
+	app, err := bootstrap.New(*l, cfg) // pointer
+	if err != nil {
+		l.Error("bootstrap.New: %w", zap.Error(err)) // TODO tut
+	}
 
 	go func(){
 		osCall := <-quitSignal
@@ -38,6 +40,5 @@ func main() {
 		cancel()
 	}()
 
-	// TODO app run
 	app.Run(ctx)
 }
