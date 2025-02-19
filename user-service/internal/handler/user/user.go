@@ -33,6 +33,8 @@ func (h *Handler) SignUp() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var signUpReq signUpReq
 		if err := c.ShouldBindJSON(&signUpReq); err != nil {
+			h.l.Error("ShouldBindJSON", zap.Error(err))
+			
 			response.Error(c, err)
 			
 			return
@@ -40,6 +42,8 @@ func (h *Handler) SignUp() gin.HandlerFunc {
 
 		resp, err := h.service.SignUp(c.Request.Context(), signUpReq.toDomain())
 		if err != nil {
+			h.l.Error("service.SignUp", zap.Error(err))
+			
 			response.Error(c, err)
 
 			return

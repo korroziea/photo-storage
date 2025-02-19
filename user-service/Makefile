@@ -1,5 +1,8 @@
 POSTGRES_URL=postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=disable
 
+run: ## run application `make run`
+	go run cmd/server/main.go
+
 migrate-create: ## create migration file `make migrate-create name=migration_name`
 	@migrate create -dir migrations -seq -ext sql $(name)
 

@@ -5,7 +5,17 @@ import "fmt"
 type Config struct {
 	HTTPPort int `env:"HTTP_PORT, default=3000"`
 
+	Hashing Hashing
+
 	DB Postgres
+}
+
+type Hashing struct {
+	Memory      uint32 `env:"HASHING_MEMORY, required"`
+	Iterations  uint32 `env:"HASHING_ITERATIONS, required"`
+	Parallelism uint8  `env:"HASHING_PARALLELISM, required"`
+	SaltLength  uint32 `env:"HASHING_SALT_LEN, required"`
+	KeyLength   uint32 `env:"HASHING_KEY_LEN, required"`
 }
 
 type Postgres struct {

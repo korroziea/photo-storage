@@ -12,6 +12,7 @@ import (
 	userrepo "github.com/korroziea/photo-storage/internal/repository/psql/user"
 	httpserver "github.com/korroziea/photo-storage/internal/server/http"
 	userservice "github.com/korroziea/photo-storage/internal/service/user"
+	"github.com/korroziea/photo-storage/pkg/hashing"
 	"go.uber.org/zap"
 )
 
@@ -25,15 +26,16 @@ func New(
 	l zap.Logger,
 	cfg config.Config,
 ) (*App, error) {
-	db, close, err := psql.Connect(cfg.DB)
+	db, _, err := psql.Connect(cfg.DB) // TODO add defer close
 	if err != nil {
 		return nil, fmt.Errorf("psql.Connect: %w", err)
 	}
-	defer close()
-
+	
+	argon := hashing.New(cfg.Hashing)
+	
 	userRepo := userrepo.New(db)
 
-	userService := userservice.New(userRepo)
+	userService := userservice.New(argon, userRepo)
 
 	userHandler := userhndl.New(l, userService)
 
